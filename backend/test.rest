@@ -1,0 +1,35 @@
+POST http://localhost:5000/api/users/addnewstaff 
+content-type: application/json
+
+{
+  "fullName": "Dr. Sugumaran",
+  "registerNumber": "STAFF004",
+  "password": "STAFF004",
+  "department": "CSE",
+  "dateOfBirth":"19/06/2005",
+  "classSection":"CSE-B-III",
+  "email": "sugumaran@college.edu",
+  "phoneNumber": "9876543210",
+  "profileImg": "",
+  "eventManaging":"sports",
+  "classStudents":[
+]
+,
+  "counsellingStudents":[
+   ]
+}
+###
+GET http://localhost:5000/api/leave/getallleave HTTP/1.1
+###
+POST http://localhost:5000/api/contact
+content-type: application/json
+
+{
+ 
+}
+###
+GET http://localhost:5000/api/leave/getleave/6816346b0df56eff8a56372c
+###
+GET http://localhost:5000/api/complaints
+### test onduty accept route
+GET http://localhost:5000/api/onduty/getallonduty

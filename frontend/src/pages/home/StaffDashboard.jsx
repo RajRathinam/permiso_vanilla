@@ -1,0 +1,119 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Charts from './Charts.jsx';
+import BarCharts from './BarCharts.jsx';
+import TwoCharts from './TwoCharts.jsx';
+
+const StaffDashboard = ({ authUser }) => {
+
+    const [userData, setUserData] = useState([]);
+
+   useEffect(() => {
+    const fetchStaffs = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/api/leave/getallleave');
+            const leaveData = await res.json();
+
+            const ress = await fetch('http://localhost:5000/api/onduty/getallonduty');
+            const ondutyData = await ress.json();
+
+            const mergedData = [...leaveData, ...ondutyData];
+
+           
+            const filteredData = mergedData.filter((s) => s.staffs?.staff?._id === authUser._id);
+
+         
+            setUserData(filteredData);
+
+        } catch (error) {
+            console.error('Error fetching staffs:', error);
+        }
+    };
+
+    fetchStaffs();
+}, [authUser._id]);
+
+
+
+    return (
+        <main className='px-4 py-2 mb-3'>
+            <div className='rounded-md px-[3%] py-2 bg-slate-500/10'>
+                <h1 className="text-2xl mb-2 font-bold text-center">Welcome, {authUser.fullName}.</h1>
+                <h1 className="text-xl font-light text-center">See Your Student's Leave & On-Duty Analytics</h1>
+                <div className='w-full h-[430px] flex items-center justify-between'>
+                    <BarCharts />
+                    <Charts />
+                    <TwoCharts />
+                </div>
+            </div>
+            <div className="p-6 m-7">
+                <div className="overflow-x-auto">
+                    <table className="table">
+
+                        <thead className='py-16'>
+                            <tr>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>SI.NO</div></th>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>NAME & REGISTER NUMBER</div></th>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>DEPARTMENT & SECTION</div></th>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>REQUEST TYPE</div></th>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>UPLOADED DATE</div></th>
+                                <th><div className='text-[20px] font-extrabold text-center pb-5 border-b-2'>DETAILS</div></th>
+                            </tr>
+                        </thead>
+                        <tbody className='mb-20'>
+
+                            {userData && userData.map((user, index) => {
+                                return (<tr key={user._id}>
+                                    <th className='text-center'>
+                                        {index + 1}.
+                                    </th>
+                                    <td>
+                                        <div className="flex items-center ml-12 gap-3">
+                                            <div className="avatar">
+                                                <div className="mask mask-squircle h-12 w-12">
+                                                    <img
+                                                        src={user.userId.profileImg || "/profileAvatar.jpeg"}
+                                                        alt="Avatar Tailwind CSS Component" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="font-bold">{user.userId.fullName}</div>
+                                                <div className="text-sm opacity-50">{user.userId.registerNumber}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className='text-center'>
+                                            <div className="font-bold">{user.userId.department}</div>
+                                            <div className="text-sm opacity-50">{user.userId.classSection}</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className='text-center'>{user.requesttype}</div>
+                                    </td>
+                                    <td>
+                                        <div className='text-center'>{new Date(user.createdAt).toLocaleDateString('en-GB')}</div>
+                                    </td>
+                                    <th className='text-center'>
+                                        {user.requesttype == 'Leave Request' && <Link to="/leave-request"
+                                            state={{ user }} >
+                                            <button className="py-2 px-4 rounded-lg bg-gradient-to-r from-slate-500/10 to-slate-700/20 hover:from-slate-200 hover:text-black hover:to-slate-400">Details</button>
+                                        </Link>}
+                                        {user.requesttype == 'On-duty Request' && <Link to="/single-request"
+                                            state={{ user }} >
+                                            <button className="py-2 px-4 rounded-lg bg-gradient-to-r from-slate-500/10 to-slate-700/20 hover:from-slate-200 hover:text-black hover:to-slate-400">Details</button>
+                                        </Link>}
+                                    </th>
+                                </tr>)
+                            })
+
+                            }
+                        </tbody>
+                    </table>
+                    {userData.length == 0 && <p className='text-center my-5'>There is no pending request</p>}
+                </div>
+            </div>
+        </main>
+    )
+}
+export default StaffDashboard;
