@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { FaUserGraduate, FaChalkboardTeacher } from 'react-icons/fa';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import baseUrl from '../../config/config';
+import baseUrl from '../../config/config.js';
 const LoginPage = ({ authUser, setAuthUser }) => {
     const [formData, setFormData] = useState({
         userType: "student",
