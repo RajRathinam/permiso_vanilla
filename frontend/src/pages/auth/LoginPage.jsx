@@ -54,7 +54,7 @@ const LoginPage = ({ authUser, setAuthUser }) => {
     };
 
     return (
-        <div className="h-screen bg-[url('./bg.jpg')] bg-cover bg-center grid place-items-center">
+        <div className="h-screen bg-[url('/bg.jpg')] bg-cover bg-center grid place-items-center">
             <div className='relative bg-black/70 top-0 left-0 h-screen w-screen'></div>
             <div className='absolute inset-0 m-auto lg:w-2/3 flex-1 flex flex-col gap-10 lg:flex-row lg:gap-20 justify-center items-center'>
                 <div className='lg:w-1/2 text-white'>
