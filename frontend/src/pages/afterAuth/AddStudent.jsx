@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt } from 'react-icons/fa';
 import { MdClass, MdSchool, MdPerson } from 'react-icons/md';
+import baseUrl from '../../config/config';
 
 const AddStudent = ({ authUser }) => {
 
@@ -9,7 +10,7 @@ const AddStudent = ({ authUser }) => {
   useEffect(() => {
     const fetchStaffs = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users/getallStaffs');
+        const res = await fetch(`${baseUrl}/api/users/getallStaffs`);
         const datas = await res.json();
         setStaffs(datas);
         setStaffs((prev) => prev.filter((s) => s.department == authUser.department))
@@ -57,7 +58,7 @@ const AddStudent = ({ authUser }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/addnewuser', {
+      const response = await fetch(`${baseUrl}/api/users/addnewuser`, {
         method: 'POST',
         body: formData,
       });

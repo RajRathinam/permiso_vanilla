@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { FaUserGraduate, FaChalkboardTeacher } from 'react-icons/fa';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-
+import baseUrl from '../../config/config';
 const LoginPage = ({ authUser, setAuthUser }) => {
     const [formData, setFormData] = useState({
         userType: "student",
@@ -26,7 +26,7 @@ const LoginPage = ({ authUser, setAuthUser }) => {
         setIsPending(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:5000/api/users/login', {
+            const response = await fetch(`${baseUrl}/api/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -54,7 +54,7 @@ const LoginPage = ({ authUser, setAuthUser }) => {
     };
 
     return (
-        <div className="h-screen bg-[url('../../../public/bg.jpg')] bg-cover bg-center grid place-items-center">
+        <div className="h-screen bg-[url('./bg.jpg')] bg-cover bg-center grid place-items-center">
             <div className='relative bg-black/70 top-0 left-0 h-screen w-screen'></div>
             <div className='absolute inset-0 m-auto lg:w-2/3 flex-1 flex flex-col gap-10 lg:flex-row lg:gap-20 justify-center items-center'>
                 <div className='lg:w-1/2 text-white'>

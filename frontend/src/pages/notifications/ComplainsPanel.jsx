@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IoHandLeftSharp } from "react-icons/io5";
 import axios from 'axios';
+import baseUrl from '../../config/config';
 
 const ComplainsPanel = ({ complaint, currentUserId,authUser }) => {
   const [likes, setLikes] = useState(complaint.likes || []);
@@ -9,7 +10,7 @@ const ComplainsPanel = ({ complaint, currentUserId,authUser }) => {
 
   const toggleLike = async () => {
     try {
-      const endpoint = `http://localhost:5000/api/complaints/${complaint._id}/${hasLiked ? 'dislike' : 'like'}`;
+      const endpoint = `${baseUrl}/api/complaints/${complaint._id}/${hasLiked ? 'dislike' : 'like'}`;
       const res = await axios.post(endpoint, { userId: currentUserId });
 
       setLikes(res.data.likes);

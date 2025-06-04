@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
+import baseUrl from '../../config/config';
 
 const ChangePassword = ({authUser}) => {
     
@@ -20,7 +21,7 @@ const ChangePassword = ({authUser}) => {
             if(updatedInfo.registerNumber!==authUser.registerNumber){
                 throw new Error("Username not same")
             }
-            const response = await fetch('http://localhost:5000/api/users/changepassword', {
+            const response = await fetch(`${baseUrl}/api/users/changepassword`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedInfo),

@@ -2,9 +2,10 @@ import React, { useRef, useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import baseUrl from '../../config/config';
 
 const LeaveRequest = ({ authUser }) => {
-  const baseUrl = "http://localhost:5000";
+
   const navigate = useNavigate();
   const location = useLocation();
   const { user, i } = location.state || {};

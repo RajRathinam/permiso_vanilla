@@ -4,6 +4,7 @@ import ComplainsPanel from "./ComplainsPanel";
 import React, { useEffect, useState } from 'react';
 import "../../index.css";
 import axios from "axios";
+import baseUrl from "../../config/config";
 
 const notifications = [
     { id: 1, status: "success", title: "On-Duty Request Approved", description: "Your on-duty request has been approved.", timestamp: "2025-01-15", read: false },
@@ -18,7 +19,7 @@ const NotificationPage = ({authUser}) => {
     useEffect(() => {
         const fetchComplaints = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/complaints");
+                const res = await axios.get(`${baseUrl}/api/complaints`);
                 setComplaints(res.data.reverse());
             } catch (err) {
                 console.error("Error fetching complaints:", err);

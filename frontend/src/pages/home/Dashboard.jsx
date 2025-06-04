@@ -5,7 +5,7 @@ import AppliedRequest from './AppliedRequest';
 import RisiedComplaints from "./RisiedComplaints";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import baseUrl from '../../config/config';
 
 const Dashboard = ({ authUser }) => {
 
@@ -16,9 +16,9 @@ const Dashboard = ({ authUser }) => {
     useEffect(() => {
         const fetchStaffs = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/leave/getallleave');
+                const res = await fetch(`${baseUrl}/api/leave/getallleave`);
                 const datas = await res.json();
-                const ress = await fetch('http://localhost:5000/api/onduty/getallonduty');
+                const ress = await fetch(`${baseUrl}/api/onduty/getallonduty`);
                 const ondutyData = await ress.json();
 
                 const mergedData = [...datas, ...ondutyData];
@@ -36,7 +36,7 @@ const Dashboard = ({ authUser }) => {
     useEffect(() => {
         const fetchComplaints = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/complaints//user/${authUser._id}`);
+                const res = await axios.get(`${baseUrl}/api/complaints//user/${authUser._id}`);
                 setComplaints(res.data);
             } catch (err) {
                 console.error("Error fetching complaints:", err);
@@ -48,7 +48,7 @@ const Dashboard = ({ authUser }) => {
     // Handle delete
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/complaints/${id}`, {
+            await axios.delete(`${baseUrl}/api/complaints/${id}`, {
                 data: { userId: authUser._id }
                 // send userId in body for authorization check
             });

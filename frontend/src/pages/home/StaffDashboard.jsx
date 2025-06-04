@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Charts from './Charts.jsx';
 import BarCharts from './BarCharts.jsx';
 import TwoCharts from './TwoCharts.jsx';
+import baseUrl from '../../config/config.js';
 
 const StaffDashboard = ({ authUser }) => {
 
@@ -11,10 +12,10 @@ const StaffDashboard = ({ authUser }) => {
    useEffect(() => {
     const fetchStaffs = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/leave/getallleave');
+            const res = await fetch(`${baseUrl}/api/leave/getallleave`);
             const leaveData = await res.json();
 
-            const ress = await fetch('http://localhost:5000/api/onduty/getallonduty');
+            const ress = await fetch(`${baseUrl}/api/onduty/getallonduty`);
             const ondutyData = await ress.json();
 
             const mergedData = [...leaveData, ...ondutyData];

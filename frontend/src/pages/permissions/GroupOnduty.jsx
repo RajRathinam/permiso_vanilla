@@ -3,7 +3,7 @@ import QRCode from 'react-qr-code';
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import SearchTable from "../../components/common/SearchTable";
-
+import baseUrl from '../../config/config';
 
 const Onduty = ({ authUser }) => {
   const [fileName, setFileName] = useState("choose file");
@@ -73,7 +73,7 @@ console.log(submissionData);
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users/all');
+        const res = await fetch(`${baseUrl}/api/users/all`);
         const datas = await res.json();
         setFromBackend(datas);
       } catch (error) {

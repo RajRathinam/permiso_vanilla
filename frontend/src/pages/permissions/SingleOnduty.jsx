@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import { useLocation, useNavigate } from 'react-router-dom';
+import baseUrl from '../../config/config';
 
 const SingleOnduty = ({ authUser }) => {
-   const baseUrl = "http://localhost:5000";
+  //  const baseUrl = "http://localhost:5000";
   const date = new Date();
   let data;
   const navigate = useNavigate();

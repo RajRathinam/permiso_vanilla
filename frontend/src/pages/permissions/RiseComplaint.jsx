@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import baseUrl from "../../config/config";
 
 export default function RiseComplaint({authUser}) {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ export default function RiseComplaint({authUser}) {
       data.append("file", formData.file);
       data.append("userId", authUser._id); // Replace this with actual user ID
 
-      const res = await axios.post("http://localhost:5000/api/complaints", data, {
+      const res = await axios.post(`${baseUrl}/api/complaints`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
