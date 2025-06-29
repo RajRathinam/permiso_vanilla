@@ -6,13 +6,16 @@ dotenv.config();
 const MONGO_URI = process.env.MONGO_URI;
 
 const dbConnect = async () => {
+    if (!MONGO_URI) {
+        console.error('MONGO_URI not found in environment variables');
+        process.exit(1);
+    }
+
     try {
-        await mongoose.connect(MONGO_URI, {
-            useNewUrlParser: true,
-        });
-        console.log('MongoDB Connected');
+        await mongoose.connect(MONGO_URI); // No options needed
+        console.log('✅ MongoDB Connected');
     } catch (error) {
-        console.log(`DB Connection Error: ${error}`);
+        console.error(`DB Connection Error: ${error.message}`);
         process.exit(1);
     }
 };
