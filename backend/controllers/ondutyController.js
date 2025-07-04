@@ -244,7 +244,7 @@ export const getonduty = async (req, res) => {
     </html>
     `;
 
-    if (onduty.acceptedby.length !== 4 || onduty.rejectedby.length !== 0) {
+    if (!onduty.staffs.approved) {
       return res.status(400).send(htmlnotfully);
     }
 
