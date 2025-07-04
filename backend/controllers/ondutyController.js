@@ -4,53 +4,53 @@ import Staff from '../models/Staff.js';
 
 // post onduty
 export const postOnduty = async (req, res) => {
-    const { userId, numberOfDays, from, to, event, eventName, venue } = req.body;
+  const { userId, numberOfDays, from, to, event, eventName, venue } = req.body;
 
-    try {
-        const existSameDate = await Onduty.findOne({
-            userId,
-            from,
-            to
-        });
+  try {
+    const existSameDate = await Onduty.findOne({
+      userId,
+      from,
+      to
+    });
 
-        if (existSameDate) {
-            return res.status(400).json({ message: 'Onduty request already exists for the selected date range' });
-        }
-
-        const user = await User.findById(userId);
-
-        const eventStaff = await Staff.findOne({ department: user.department, eventManaging: event.toLowerCase() });
-        if (!eventStaff) {
-            return res.status(400).json({ message: 'There is no staff assigned for this event' });
-        }
-        const ondutyRequest = new Onduty({
-            userId,
-            requesttype: 'On-duty Request',
-            numberOfDays,
-            from,
-            to,
-            event,
-            eventName,
-            venue,
-            eventCoordinatorId:eventStaff._id,
-            officials: [eventStaff._id, user.counsellor, user.classIncharge, user.hod],
-            staffs: {
-                staff: eventStaff._id,
-                approved: null
-            },
-        });
-
-        await ondutyRequest.save();
-
-        res.status(201).json({
-            message: 'On-duty request added successfully',
-            ondutyRequest
-        });
-
-    } catch (error) {
-        console.error('Error in onduty post:', error);
-        res.status(500).json({ message: 'Server Error while adding onduty post' });
+    if (existSameDate) {
+      return res.status(400).json({ message: 'Onduty request already exists for the selected date range' });
     }
+
+    const user = await User.findById(userId);
+
+    const eventStaff = await Staff.findOne({ department: user.department, eventManaging: event.toLowerCase() });
+    if (!eventStaff) {
+      return res.status(400).json({ message: 'There is no staff assigned for this event' });
+    }
+    const ondutyRequest = new Onduty({
+      userId,
+      requesttype: 'On-duty Request',
+      numberOfDays,
+      from,
+      to,
+      event,
+      eventName,
+      venue,
+      eventCoordinatorId: eventStaff._id,
+      officials: [eventStaff._id, user.counsellor, user.classIncharge, user.hod],
+      staffs: {
+        staff: eventStaff._id,
+        approved: null
+      },
+    });
+
+    await ondutyRequest.save();
+
+    res.status(201).json({
+      message: 'On-duty request added successfully',
+      ondutyRequest
+    });
+
+  } catch (error) {
+    console.error('Error in onduty post:', error);
+    res.status(500).json({ message: 'Server Error while adding onduty post' });
+  }
 }
 
 // get all request under the staff as me
@@ -75,9 +75,11 @@ export const staffAccept = async (req, res) => {
   try {
     const { id, staffId } = req.params;
 
-    const onduty = await Onduty.findById(id);
-    if (!onduty) 
-    {
+    const onduty = await Onduty.findById(id).populate({
+      path: 'userId',
+      select: 'fullName'
+    });
+    if (!onduty) {
       return res.status(404).json({ message: 'onduty request not found' });
     }
 
@@ -96,6 +98,23 @@ export const staffAccept = async (req, res) => {
       // All approvals done
       onduty.staffs.staff = null;
       onduty.staffs.approved = true; // Optional: set approved flag
+
+
+      const counsel = await Staff.findById(onduty.officials[1]);
+      const incharge = await Staff.findById(onduty.officials[2]);
+
+      const data = {
+        name: onduty.userId.fullName,
+        requestType: onduty.requesttype,
+        requestFor: onduty.event
+      }
+
+      counsel.counsellingStudents.push(data);
+      incharge.classStudents.push(data);
+
+      await counsel.save();
+      await incharge.save();
+
     } else {
       // Set the next staff
       onduty.staffs.staff = remainingOfficials[0];
@@ -111,13 +130,12 @@ export const staffAccept = async (req, res) => {
 
 //staff reject the request
 
-export const staffReject= async (req, res) => {
+export const staffReject = async (req, res) => {
   try {
     const { id, staffId } = req.params;
 
     const onduty = await Onduty.findById(id);
-    if (!onduty) 
-    {
+    if (!onduty) {
       return res.status(404).json({ message: 'Leave request not found' });
     }
 
@@ -135,10 +153,10 @@ export const staffReject= async (req, res) => {
     remainingOfficials.forEach(official => {
       onduty.rejectedby.push(official);
     })
-    
+
     onduty.staffs.staff = null;
     onduty.staffs.approved = false;
-   
+
 
     await onduty.save();
 
@@ -163,7 +181,7 @@ export const getonduty = async (req, res) => {
           { path: 'hod', select: 'fullName' }
         ]
       }).populate({
-        path:'eventCoordinatorId',
+        path: 'eventCoordinatorId',
         select: 'fullName'
       });
 

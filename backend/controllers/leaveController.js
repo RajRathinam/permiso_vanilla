@@ -1,5 +1,6 @@
 import Leave from '../models/Leave.js';
 import User from '../models/User.js';
+import Staff from '../models/Staff.js';
 
 // post leave
 export const postLeave = async (req, res) => {
@@ -314,9 +315,11 @@ export const staffAccept = async (req, res) => {
   try {
     const { id, staffId } = req.params;
 
-    const leave = await Leave.findById(id);
-    if (!leave) 
-    {
+    const leave = await Leave.findById(id).populate({
+      path: 'userId',
+      select: 'fullName'
+    });
+    if (!leave) {
       return res.status(404).json({ message: 'Leave request not found' });
     }
 
@@ -335,6 +338,22 @@ export const staffAccept = async (req, res) => {
       // All approvals done
       leave.staffs.staff = null;
       leave.staffs.approved = true; // Optional: set approved flag
+
+      const counsel = await Staff.findById(leave.officials[0]);
+      const incharge = await Staff.findById(leave.officials[1]);
+
+      const data = {
+        name:leave.userId.fullName,
+        requestType:leave.requesttype,
+        requestFor:leave.reason
+      }
+
+      counsel.counsellingStudents.push(data);
+      incharge.classStudents.push(data);
+
+      await counsel.save();
+      await incharge.save();
+
     } else {
       // Set the next staff
       leave.staffs.staff = remainingOfficials[0];
@@ -348,13 +367,12 @@ export const staffAccept = async (req, res) => {
   }
 };
 
-export const staffReject= async (req, res) => {
+export const staffReject = async (req, res) => {
   try {
     const { id, staffId } = req.params;
 
     const leave = await Leave.findById(id);
-    if (!leave) 
-    {
+    if (!leave) {
       return res.status(404).json({ message: 'Leave request not found' });
     }
 
@@ -372,10 +390,10 @@ export const staffReject= async (req, res) => {
     remainingOfficials.forEach(official => {
       leave.rejectedby.push(official);
     })
-    
+
     leave.staffs.staff = null;
     leave.staffs.approved = false;
-   
+
 
     await leave.save();
 

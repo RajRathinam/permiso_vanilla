@@ -2,16 +2,16 @@ POST http://localhost:5000/api/users/addnewstaff
 content-type: application/json
 
 {
-  "fullName": "Dr. Sugumaran",
-  "registerNumber": "STAFF004",
-  "password": "STAFF004",
+  "fullName": "Dr. Manivannan",
+  "registerNumber": "HODCSE",
+  "password": "HODCSE",
   "department": "CSE",
   "dateOfBirth":"19/06/2005",
-  "classSection":"CSE-B-III",
-  "email": "sugumaran@college.edu",
+  "classSection":"CSE",
+  "email": "mani@college.edu",
   "phoneNumber": "9876543210",
   "profileImg": "",
-  "eventManaging":"sports",
+  "eventManaging":"",
   "classStudents":[
 ]
 ,

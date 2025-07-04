@@ -13,10 +13,10 @@ cloudinary.config({
 
 // Change Password
 export const changePassword = async (req, res) => {
-  const { registerNumber, password, newPassword,role } = req.body;
+  const { registerNumber, password, newPassword, role } = req.body;
 
   try {
-    const user = role=='student'?await User.findOne({ registerNumber }):await Staff.findOne({ registerNumber });
+    const user = role == 'student' ? await User.findOne({ registerNumber }) : await Staff.findOne({ registerNumber });
     if (!user) {
       return res.status(401).json({ message: "User Not Found" });
     }
@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
 
 
   try {
-    const user = role=='student'? await User.findOne({ registerNumber }).populate('classIncharge', '_id fullName department').populate('counsellor', '_id fullName department').populate('hod', '_id fullName department'):await Staff.findOne({ registerNumber });
+    const user = role == 'student' ? await User.findOne({ registerNumber }).populate('classIncharge', '_id fullName department').populate('counsellor', '_id fullName department').populate('hod', '_id fullName department') : await Staff.findOne({ registerNumber });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -57,52 +57,54 @@ export const loginUser = async (req, res) => {
       return res.status(403).json({ message: 'Unauthorized role' });
     }
 
-let userData={};
+    let userData = {};
 
-   if(role=='student'){
-    userData = {
-      _id:user._id,
-      fullName:user.fullName,
-      registerNumber:user.registerNumber,
-      dateOfBirth:user.dateOfBirth,
-      classSection:user.classSection,
-      department:user.department,
-      email:user.email,
-      phoneNumber:user.phoneNumber,
-      classIncharge:{
-        _id:user.classIncharge._id,
-        fullName:user.classIncharge.fullName,
-        department:user.classIncharge.department
-      },
-      counsellor:{
-        _id:user.counsellor._id,
-        fullName:user.counsellor.fullName,
-        department:user.counsellor.department
-      },
-      hod:{
-        _id:user.hod._id,
-        fullName:user.hod.fullName,
-        department:user.hod.department
-      },
-      role:user.role,
-      profileImg:user.profileImg
-    }
+    if (role == 'student') {
+      userData = {
+        _id: user._id,
+        fullName: user.fullName,
+        registerNumber: user.registerNumber,
+        dateOfBirth: user.dateOfBirth,
+        classSection: user.classSection,
+        department: user.department,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        classIncharge: {
+          _id: user.classIncharge._id,
+          fullName: user.classIncharge.fullName,
+          department: user.classIncharge.department
+        },
+        counsellor: {
+          _id: user.counsellor._id,
+          fullName: user.counsellor.fullName,
+          department: user.counsellor.department
+        },
+        hod: {
+          _id: user.hod._id,
+          fullName: user.hod.fullName,
+          department: user.hod.department
+        },
+        role: user.role,
+        profileImg: user.profileImg
+      }
 
-   }
-   else{
-    userData={
-      _id:user._id,
-      fullName:user.fullName,
-      registerNumber:user.registerNumber,
-      dateOfBirth:user.dateOfBirth,
-      classSection:user.classSection,
-      department:user.department,
-      email:user.email,
-      phoneNumber:user.phoneNumber,
-      role:user.role,
-      profileImg:user.profileImg
     }
-   }
+    else {
+      userData = {
+        _id: user._id,
+        fullName: user.fullName,
+        registerNumber: user.registerNumber,
+        dateOfBirth: user.dateOfBirth,
+        classSection: user.classSection,
+        department: user.department,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+        profileImg: user.profileImg,
+        classStudents: user.classStudents,
+        counsellingStudents:user.counsellingStudents
+      }
+    }
     res.json({
       message: 'Login successful',
       user: userData
@@ -252,3 +254,4 @@ export const getAllStaffs = async (req, res) => {
     res.status(500).json({ message: 'Server error while fetching staffs' });
   }
 };
+

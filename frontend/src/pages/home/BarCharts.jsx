@@ -3,28 +3,20 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 const data = [
   {
-    name: 'Page A',
-    uv: 40,
-    pv: 24,
-    amt: 24,
+    name: 'Technical',
+    students:10
   },
   {
-    name: 'Page B',
-    uv: 30,
-    pv: 13,
-    amt: 22,
+    name: 'Extracurricular',
+    students:5
   },
   {
-    name: 'Page C',
-    uv: 20,
-    pv: 68,
-    amt: 22,
+    name: 'Sports',
+    students:15
   },
   {
-    name: 'Page D',
-    uv: 27,
-    pv: 39,
-    amt: 20,
+    name: 'Internship',
+    students:35
   }
 ];
 
@@ -33,7 +25,7 @@ export default class BarCharts extends PureComponent {
 
   render() {
     return (
-      <ResponsiveContainer width="35%" height="60%">
+      <ResponsiveContainer width="40%" height="60%">
         <BarChart
           width={500}
           height={300}
@@ -42,18 +34,18 @@ export default class BarCharts extends PureComponent {
             top: 5,
             right: 30,
             left: 20,
-            bottom: 5,
+            bottom: 10,
           }}
           barSize={20}
         >
-          <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
+          <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10, bottom:20 }} />
           <YAxis />
           <Tooltip />
           <Legend />
           <CartesianGrid strokeDasharray="3 3" />
-          <Bar dataKey="pv" fill="#8884d8" background={{ fill: '#eee' }} />
+          <Bar dataKey="students" fill="navy" background={{ fill: '#eee' }} />
         </BarChart>
-        <h1 className="text-2xl font-extralight px-16 mt-1 text-center">Both Class & Counselling Student's</h1>
+        <h1 className="text-2xl font-extralight px-16 mt-1 text-center">On-Duties</h1>
       </ResponsiveContainer>
     );
   }

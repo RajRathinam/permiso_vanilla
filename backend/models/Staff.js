@@ -5,16 +5,24 @@ const staffSchema = new mongoose.Schema({
     registerNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     dateOfBirth: { type: String, required: true },
-    classSection: { type: String},
+    classSection: { type: String },
     department: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phoneNumber: { type: String, required: true },
     role: { type: String, required: true },
     profileImg: { type: String, default: '' },
-    eventManaging:{ type: String, default: ''},
+    eventManaging: { type: String, default: '' },
     // New arrays for staff users
-    classStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    counsellingStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    classStudents: [{
+        name: { type: String, required: true },
+        requestType: { type: String, required: true },
+        requestFor: { type: String, required: true }
+    }],
+    counsellingStudents: [{
+        name:{ type: String, required: true },
+        requestType: { type: String, required: true },
+        requestFor: { type: String, required: true }
+    }],
 }, { timestamps: true });
 
 const Staff = mongoose.model('Staff', staffSchema);

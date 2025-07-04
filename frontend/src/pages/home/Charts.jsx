@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: 'In Leave', value: 5 },
-  { name: 'In On-Duty', value: 3 },
-  { name: 'Complaints', value: 15 },
-  { name: 'Group D', value: 10 },
-];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -56,7 +50,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-const Charts = () => {
+const Charts = ({title, colour, data}) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_, index) => {
@@ -74,13 +68,13 @@ const Charts = () => {
           cy="50%"
           innerRadius={60}
           outerRadius={80}
-          fill="#8884d8"
+          fill={colour}
           dataKey="value"
           onMouseEnter={onPieEnter}
           style={{ outline: 'none' }}
         />
       </PieChart>
-      <h1 className="text-2xl font-extralight px-16 mt-1 text-center">Both Class & Counselling Student's</h1>
+      <h1 className="text-2xl font-extralight px-16 mt-1 text-center">{title}</h1>
     </ResponsiveContainer>
   );
 };

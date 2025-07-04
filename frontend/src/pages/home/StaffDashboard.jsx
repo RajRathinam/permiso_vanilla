@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Charts from './Charts.jsx';
 import BarCharts from './BarCharts.jsx';
-import TwoCharts from './TwoCharts.jsx';
+// import TwoCharts from './TwoCharts.jsx';
 import baseUrl from '../../config/config.js';
+
+
 
 const StaffDashboard = ({ authUser }) => {
 
     const [userData, setUserData] = useState([]);
+    const [CounsellingStudents, setCounsellingStudents] = useState([]);
+    const [ClassStudents, setClassStudents] = useState([]);
+
 
    useEffect(() => {
     const fetchStaffs = async () => {
@@ -19,13 +24,13 @@ const StaffDashboard = ({ authUser }) => {
             const ondutyData = await ress.json();
 
             const mergedData = [...leaveData, ...ondutyData];
+            const filteredData = mergedData.filter(
+                (s) => s.staffs?.staff?._id === authUser._id
+            );
 
-           
-            const filteredData = mergedData.filter((s) => s.staffs?.staff?._id === authUser._id);
-
-         
             setUserData(filteredData);
-
+            setClassStudents(authUser.classStudents || []);
+            setCounsellingStudents(authUser.counsellingStudents || []);
         } catch (error) {
             console.error('Error fetching staffs:', error);
         }
@@ -34,8 +39,25 @@ const StaffDashboard = ({ authUser }) => {
     fetchStaffs();
 }, [authUser._id]);
 
+// Log when state actually changes
+useEffect(() => {
+    console.log("Updated Class Students:", ClassStudents);
+}, [ClassStudents]);
 
+useEffect(() => {
+    console.log("Updated Counselling Students:", CounsellingStudents);
+}, [CounsellingStudents]);
 
+const counsellingData = [
+  { name: 'In Leave', value: 5 },
+  { name: 'In On-Duty', value: 3 },
+  { name: 'Complaints', value: 15 },
+];
+const classData = [
+  { name: 'In Leave', value: 1 },
+  { name: 'In On-Duty', value: 8 },
+  { name: 'Complaints', value: 4 },
+];
     return (
         <main className='px-4 py-2 mb-3'>
             <div className='rounded-md px-[3%] py-2 bg-slate-500/10'>
@@ -43,8 +65,9 @@ const StaffDashboard = ({ authUser }) => {
                 <h1 className="text-xl font-light text-center">See Your Student's Leave & On-Duty Analytics</h1>
                 <div className='w-full h-[430px] flex items-center justify-between'>
                     <BarCharts />
-                    <Charts />
-                    <TwoCharts />
+                    <Charts title={"Counselling Student's"} colour={"purple"} data={counsellingData} />
+                    <Charts title={"Class Student's"} colour={"teal"} data={classData}/>
+                    {/* <TwoCharts /> */}
                 </div>
             </div>
             <div className="p-6 m-7">

@@ -4,6 +4,8 @@ import multer from 'multer';
 import Complaint from '../models/Complaint.js';
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
+import User from '../models/User.js';
+import Staff from '../models/Staff.js';
 
 const router = express.Router();
 
@@ -36,6 +38,21 @@ router.post('/', upload.single('file'), async (req, res) => {
       description,
       imageUrl: uploadResult.secure_url,
     });
+
+    const user = await User.findById(userId);
+    const counsel = await Staff.findById(user.counsellor);
+    const incharge = await Staff.findById(user.classIncharge);
+
+    const data = {
+      name: user.fullName,
+      requestType: "Complaint",
+      requestFor:category
+    }
+    counsel.counsellingStudents.push(data);
+    incharge.classStudents.push(data);
+
+    await counsel.save();
+    await incharge.save();
 
     await newComplaint.save();
     res.status(201).json(newComplaint);
