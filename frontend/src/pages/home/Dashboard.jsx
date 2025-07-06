@@ -77,12 +77,6 @@ const Dashboard = ({ authUser }) => {
                             </Link>
                         </div>
                         <div className="py-4 rounded-lg shadow-xl hover:shadow-2xl">
-                            <Link to="/team-onduty" className="flex flex-col justify-center items-center text-secondary-500">
-                                <MdGroups size={100} />
-                                <h2 className="text-lg mt-2 lg:text-xl font-medium mb-4">Team On-Duty</h2>
-                            </Link>
-                        </div>
-                        <div className="py-4 rounded-lg shadow-xl hover:shadow-2xl">
                             <Link to="/leave-request" className="flex flex-col justify-center items-center text-secondary-500">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +123,12 @@ const Dashboard = ({ authUser }) => {
                                     <path d="M16 18l-4 4" />
                                 </svg>
                                 <h2 className="text-lg mt-2 lg:text-xl font-medium mb-4">Rise Complaint</h2>
+                            </Link>
+                        </div>
+                        <div className="py-4 rounded-lg shadow-xl hover:shadow-2xl">
+                            <Link to="/team-onduty" className="flex flex-col justify-center items-center text-secondary-500">
+                                <MdGroups size={100} />
+                                <h2 className="text-lg mt-2 lg:text-xl font-medium mb-4">Team On-Duty</h2>
                             </Link>
                         </div>
                     </div>

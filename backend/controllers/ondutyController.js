@@ -174,7 +174,7 @@ export const getonduty = async (req, res) => {
     const onduty = await Onduty.findById(id)
       .populate({
         path: 'userId',
-        select: 'fullName classIncharge counsellor hod',
+        select: 'fullName staffs classIncharge counsellor hod',
         populate: [
           { path: 'classIncharge', select: 'fullName' },
           { path: 'counsellor', select: 'fullName' },
@@ -244,7 +244,7 @@ export const getonduty = async (req, res) => {
     </html>
     `;
 
-    if (onduty.acceptedby.length !== 4 || onduty.rejectedby.length !== 0) {
+    if (!onduty.staffs.approved) {
       return res.status(400).send(htmlnotfully);
     }
 

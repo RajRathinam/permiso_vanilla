@@ -15,7 +15,8 @@ const PORT = process.env.PORT || 5000;
 
 
 app.use(cors({
-    origin: 'https://permiso-vanilla-1.onrender.com', // Allow requests from your frontend
+    origin: 'https://permiso-vanilla-1.onrender.com',
+    // origin:'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     credentials: true // Allow cookies if needed
 }));

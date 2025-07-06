@@ -1,17 +1,17 @@
-POST http://localhost:5000/api/users/addnewstaff 
+POST https://permiso-vanilla.onrender.com/api/users/addnewstaff 
 content-type: application/json
 
 {
-  "fullName": "Dr. Manivannan",
-  "registerNumber": "HODCSE",
-  "password": "HODCSE",
+  "fullName": "Dr. Sugumaran",
+  "registerNumber": "STAFF004",
+  "password": "STAFF004",
   "department": "CSE",
   "dateOfBirth":"19/06/2005",
-  "classSection":"CSE",
-  "email": "mani@college.edu",
+  "classSection":"CSE-B-III",
+  "email": "sugumar@college.edu",
   "phoneNumber": "9876543210",
   "profileImg": "",
-  "eventManaging":"",
+  "eventManaging":"sports",
   "classStudents":[
 ]
 ,

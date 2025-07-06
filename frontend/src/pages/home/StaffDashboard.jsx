@@ -14,50 +14,64 @@ const StaffDashboard = ({ authUser }) => {
     const [ClassStudents, setClassStudents] = useState([]);
 
 
-   useEffect(() => {
-    const fetchStaffs = async () => {
-        try {
-            const res = await fetch(`${baseUrl}/api/leave/getallleave`);
-            const leaveData = await res.json();
+    useEffect(() => {
+        const fetchStaffs = async () => {
+            try {
+                const res = await fetch(`${baseUrl}/api/leave/getallleave`);
+                const leaveData = await res.json();
 
-            const ress = await fetch(`${baseUrl}/api/onduty/getallonduty`);
-            const ondutyData = await ress.json();
+                const ress = await fetch(`${baseUrl}/api/onduty/getallonduty`);
+                const ondutyData = await ress.json();
 
-            const mergedData = [...leaveData, ...ondutyData];
-            const filteredData = mergedData.filter(
-                (s) => s.staffs?.staff?._id === authUser._id
-            );
+                const mergedData = [...leaveData, ...ondutyData];
+                const filteredData = mergedData.filter(
+                    (s) => s.staffs?.staff?._id === authUser._id
+                );
 
-            setUserData(filteredData);
-            setClassStudents(authUser.classStudents || []);
-            setCounsellingStudents(authUser.counsellingStudents || []);
-        } catch (error) {
-            console.error('Error fetching staffs:', error);
-        }
-    };
+                setUserData(filteredData);
+                setClassStudents(authUser.classStudents || []);
+                setCounsellingStudents(authUser.counsellingStudents || []);
+            } catch (error) {
+                console.error('Error fetching staffs:', error);
+            }
+        };
 
-    fetchStaffs();
-}, [authUser._id]);
+        fetchStaffs();
+    }, [authUser._id]);
 
-// Log when state actually changes
-useEffect(() => {
-    console.log("Updated Class Students:", ClassStudents);
+    // Log when state actually changes
+   const [countByRequestType, setCountByRequestType] = useState({});
+const [countByRequestTypeCounsellor, setCountByRequestTypeCounsellor] = useState({});
+
+  useEffect(() => {
+    const classStudents = ClassStudents;
+    const counts = classStudents.reduce((acc, curr) => {
+        acc[curr.requestType] = (acc[curr.requestType] || 0) + 1;
+        return acc;
+    }, {});
+    setCountByRequestType(counts);
 }, [ClassStudents]);
 
 useEffect(() => {
-    console.log("Updated Counselling Students:", CounsellingStudents);
+    const counsellingStudents = CounsellingStudents;
+    const counts = counsellingStudents.reduce((acc, curr) => {
+        acc[curr.requestType] = (acc[curr.requestType] || 0) + 1;
+        return acc;
+    }, {});
+    setCountByRequestTypeCounsellor(counts);
 }, [CounsellingStudents]);
 
 const counsellingData = [
-  { name: 'In Leave', value: 5 },
-  { name: 'In On-Duty', value: 3 },
-  { name: 'Complaints', value: 15 },
+    { name: 'In Leave', value: countByRequestTypeCounsellor["Leave Request"] || 1  },
+    { name: 'In On-Duty', value: countByRequestTypeCounsellor["On-duty Request"] || 1 },
+    { name: 'Complaints', value: countByRequestTypeCounsellor["Complaint"] || 1 },
 ];
 const classData = [
-  { name: 'In Leave', value: 1 },
-  { name: 'In On-Duty', value: 8 },
-  { name: 'Complaints', value: 4 },
+    { name: 'In Leave', value: countByRequestType["Leave Request"] || 1 },
+    { name: 'In On-Duty', value: countByRequestType["On-duty Request"] || 1 },
+    { name: 'Complaints', value: countByRequestType["Complaint"] || 1 }
 ];
+
     return (
         <main className='px-4 py-2 mb-3'>
             <div className='rounded-md px-[3%] py-2 bg-slate-500/10'>
@@ -66,7 +80,7 @@ const classData = [
                 <div className='w-full h-[430px] flex items-center justify-between'>
                     <BarCharts />
                     <Charts title={"Counselling Student's"} colour={"purple"} data={counsellingData} />
-                    <Charts title={"Class Student's"} colour={"teal"} data={classData}/>
+                    <Charts title={"Class Student's"} colour={"teal"} data={classData} />
                     {/* <TwoCharts /> */}
                 </div>
             </div>
