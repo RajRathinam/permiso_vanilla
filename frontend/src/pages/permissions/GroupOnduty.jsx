@@ -223,11 +223,10 @@ console.log(submissionData);
         </div>
         <div className="flex flex-col sm:flex-row justify-between border-2 p-5 mb-2">
           <div className="w-full sm:w-2/3 flex flex-wrap justify-evenly">
-            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-green-500">Accepted</span><b>Physical Director</b></div>
-            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-green-500">Accepted</span><b>Principal</b></div>
-            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-red-500">Rejected</span><b>Administration Head</b></div>
-            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-red-500">Rejected</span><b>Joint Secretary</b></div>
-          </div>
+                      <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-slate-500 text-sm">Form Not Submitted</span><b>Physical Director</b></div>
+            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-slate-500 text-sm">Form Not Submitted</span><b>Principal</b></div>
+            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-slate-500 text-sm">Form Not Submitted</span><b>Administration Head</b></div>
+            <div className="w-full sm:w-1/2 text-center flex flex-col"><span className="text-slate-500 text-sm">Form Not Submitted</span><b>Joint Secretary</b></div></div>
           <div className="w-full sm:w-auto mt-4 sm:mt-0">
             <QRCode
               value="https://mern-chatsapp.onrender.com/"
