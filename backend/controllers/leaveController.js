@@ -131,7 +131,7 @@ export const getLeave = async (req, res) => {
     <body>
       <div class="card">
       <img class="logo" src="/egslogo.jpg" alt="EGS Logo" />
-        <h1>Leave Request Not Found</h1>
+        <h1>Leave Request Not Accepted</h1>
         <div class="status">You are Not allowed to get the leave</div>
       </div>
     </body>
