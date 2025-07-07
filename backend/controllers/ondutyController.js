@@ -237,7 +237,7 @@ export const getonduty = async (req, res) => {
     <body>
       <div class="card">
       <img class="logo" src="/egslogo.jpg" alt="EGS Logo" />
-        <h1>On-duty Request Not Found</h1>
+        <h1>On-duty Request Not Accepted</h1>
         <div class="status">You are Not allowed to get the On-duty</div>
       </div>
     </body>
